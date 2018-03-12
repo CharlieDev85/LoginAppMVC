@@ -9,11 +9,16 @@
 <body>
 Welcome 
 <%
-//User user = (User)request.getSession().getAttribute("user");
-User user = (User)session.getAttribute("user");
+
+//version using session
+//User user = (User)session.getAttribute("user");
+
+//version using Dispatcher
+User user =(User) request.getAttribute("user");
+
 out.println(user.getUserName());
 %>!
-
+<br>
 <%= user.getUserId() %>
 </body>
 </html>

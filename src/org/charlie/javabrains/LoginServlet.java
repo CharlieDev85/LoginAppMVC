@@ -1,6 +1,8 @@
 package org.charlie.javabrains;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,9 +39,26 @@ public class LoginServlet extends HttpServlet {
 		if (result) {
 			User user = new User();
 			user = loginService.getUserDetails(userId);
+			
+			//version using session:
 			//we have to save this user in the session scope
-			request.getSession().setAttribute("user", user);
-			response.sendRedirect("Success.jsp");
+			//request.getSession().setAttribute("user", user);
+			
+			//version using request and forward (dispatcher)
+			request.setAttribute("user", user);
+			
+			//response.sendRedirect("Success.jsp");
+			
+			//Using dispatcher
+			/*
+			 * advantages:   1.the browser won't know it is a new request
+			 * 				2.parameters can be passed in the request and response objects
+			 * 				3.Important: URL will be the same and not Success.jsp
+			 * 				4.Usefull if I don't want to create a new request.
+			 * */			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("Success.jsp");
+			dispatcher.forward(request, response);
+			
 			return;
 		} else {
 			response.sendRedirect("Login.jsp");		
